@@ -64,10 +64,8 @@ def add_bvp_constraints(model, sid='alpha', decay=False):
     model.bc2 = pyo.Constraint(model.Components, model.time, rule=bc2_rule)
     
     # Flux expression (used in reactor ODE) --> Equation 2 Right-hand side
-    # Pore ratio TypeA : TypeB = 50:50
-    #     vI = -A * D1 * Y11[0] * Np
-    # vII = A * D3 * Y31[0] * Np 
     def flux_rule(m, component, t):
         return -m.D[component] * m.dS_ndx[component, 0, t] * m.A * m.Np
     model.flux = pyo.Expression(model.Components, model.time, rule=flux_rule)
+
 
