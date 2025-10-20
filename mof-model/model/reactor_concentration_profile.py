@@ -2,20 +2,23 @@ import pyomo.environ as pyo
 import pyomo.dae as dae
 
 # based on ivp.py
+sequential_sid = ['alpha']
+simultaneous_sid = ['beta', 'gamma', 'delta']
 def add_reactor_odes(model):
     # --- ODE system for material balances (Equation 2) ---
+    
     def S1_reactor_ivp_rule(m, t):
         return m.dS_0dt['S1', t] == -m.flux['S1', t]
     
     model.S1_reactor_ivp = pyo.Constraint(model.time, rule=S1_reactor_ivp_rule)
     
     def S2_reactor_ivp_rule(m, t):
-        return m.dS_0dt['S2', t] == m.flux['S1', t] - m.flux['S2', t]
+        return m.dS_0dt['S2', t] == m.flux['S1', t] - m.flux['S3', t]
     
     model.S2_reactor_ivp = pyo.Constraint(model.time, rule=S2_reactor_ivp_rule)
     
     def S3_reactor_ivp_rule(m, t):
-        return m.dS_0dt['S3', t] == m.flux['S2', t] 
+        return m.dS_0dt['S3', t] == m.flux['S3', t] 
     
     model.S3_reactor_ivp = pyo.Constraint(model.time, rule=S3_reactor_ivp_rule)
     
